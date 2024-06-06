@@ -1,0 +1,11 @@
+/* For the form icon */
+.custom-icon-color-form .slds-icon {
+    --slds-c-icon-color-foreground-default: #0F3045 !important;
+    --slds-c-icon-color-foreground: #0F3045 !important;
+    --slds-c-icon-color-background: #FFFFFF; 
+}
+
+.slds-card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    /* Additional custom styles here */
+  }

@@ -1,0 +1,14 @@
+
+/* Styling for login button and self-register button */
+.comm-login-form__login-button,
+.comm-self-register__submit-button {
+    font-family: 'Playfair Display', serif !important;
+    font-style: normal !important;
+    font-weight: 500 !important;
+    text-transform: none !important;
+}
+
+/* Adjust carousel image max-width */
+.slds-carousel__image {
+    max-width: 600px;
+}
