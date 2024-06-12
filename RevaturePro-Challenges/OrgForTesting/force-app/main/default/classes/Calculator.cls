@@ -1,11 +1,11 @@
 public class Calculator {
 
-    // Challenge I: Add method
+    // Add method
     public Integer Add(Integer a, Integer b) {
         return a + b;
     }
 
-    // Challenge II: Multiply method
+    // Multiply method
     public Integer Multiply(Integer a, Integer b) {
         Integer result = 0;
         for (Integer i = 0; i < b; i++) {
@@ -14,10 +14,10 @@ public class Calculator {
         return result;
     }
 
-    // Challenge III & IV: Divide method
+    // Divide method
     public Integer Divide(Integer a, Integer b) {
         if (b == 0) {
-            return 0; // Challenge IV: Return 0 if divisor is zero
+            return 0; // Return 0 if divisor is zero
         }
         Integer result = 0;
         Integer sum = b;
@@ -28,25 +28,25 @@ public class Calculator {
         return result;
     }
 
-    // Challenge V: Mod method
+    // Mod method
     public Integer Mod(Integer a, Integer b) {
         Integer quotient = Divide(a, b);
         Integer product = Multiply(quotient, b);
         return a - product;
     }
 
-    // Elite Challenge I: Calculate method
+    // Calculate method
     public Double Calculate(String expression) {
         List<Double> values = new List<Double>();
         List<String> ops = new List<String>();
-    
+
         Integer i = 0;
         while (i < expression.length()) {
             if (expression.substring(i, i + 1) == ' ') {
                 i++;
                 continue;
             }
-            
+
             if (isDigitOrDot(expression.substring(i, i + 1))) {
                 String sb = '';
                 while (i < expression.length() && isDigitOrDot(expression.substring(i, i + 1))) {
@@ -56,7 +56,7 @@ public class Calculator {
                 values.add(Double.valueOf(sb));
                 continue;
             }
-            
+
             if (expression.substring(i, i + 1) == '(') {
                 ops.add('(');
             } else if (expression.substring(i, i + 1) == ')') {
@@ -78,14 +78,14 @@ public class Calculator {
             }
             i++;
         }
-    
+
         while (!ops.isEmpty()) {
             Double b = values.remove(values.size() - 1);
             Double a = values.remove(values.size() - 1);
             String op = ops.remove(ops.size() - 1);
             values.add(evaluate(a, b, op));
         }
-    
+
         return values.get(0);
     }
 
@@ -94,21 +94,24 @@ public class Calculator {
         Matcher m = p.matcher(s);
         return m.matches();
     }
-    
+
     private Double evaluate(Double a, Double b, String op) {
         if (op == '+') {
-            return Double.valueOf(Add(a.intValue(), b.intValue()));
+            return a + b;
         } else if (op == '-') {
-            return Double.valueOf(Add(a.intValue(), -b.intValue()));
+            return a - b;
         } else if (op == '*') {
-            return Double.valueOf(Multiply(a.intValue(), b.intValue()));
+            return a * b;
         } else if (op == '/') {
-            return Double.valueOf(Divide(a.intValue(), b.intValue()));
+            if (b == 0) {
+                throw new AuraHandledException('Cannot divide by zero');
+            }
+            return a / b;
         } else {
             throw new AuraHandledException('Unknown operator: ' + op);
         }
     }
-    
+
     private Boolean hasPrecedence(String op1, String op2) {
         if (op2 == '(' || op2 == ')') {
             return false;
