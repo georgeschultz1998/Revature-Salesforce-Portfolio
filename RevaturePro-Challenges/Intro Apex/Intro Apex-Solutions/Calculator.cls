@@ -37,7 +37,6 @@ public class Calculator {
 
     // Elite Challenge I: Calculate method
     public Decimal Calculate(String expression) {
-        // Evaluate the expression using the built-in Apex expression evaluation
         Decimal result = (Decimal)Parser.parseExpression(expression).evaluate();
         return result;
     }
@@ -46,6 +45,7 @@ public class Calculator {
     public static void main() {
         Calculator calc = new Calculator();
         
+        // Challenge I to V Test Cases
         System.debug('Add: ' + calc.Add(1, 2)); // 3
         System.debug('Multiply: ' + calc.Multiply(2, 3)); // 6
         System.debug('Divide: ' + calc.Divide(10, 2)); // 5

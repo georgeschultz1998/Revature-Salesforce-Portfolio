@@ -30,7 +30,10 @@ public class DataManipulationUtility {
         Integer accountIndex = 0;
         for (Contact con : contacts) {
             con.AccountId = accounts[accountIndex].Id;
-            accountIndex = (accountIndex + 1) % accounts.size();
+            accountIndex = (accountIndex + 1);
+            if (accountIndex >= accounts.size()) {
+                accountIndex = 0;
+            }
         }
         update contacts;
     }

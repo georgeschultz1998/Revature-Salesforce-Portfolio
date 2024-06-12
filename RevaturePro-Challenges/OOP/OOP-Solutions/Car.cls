@@ -27,13 +27,11 @@ public class Car extends Vehicle {
         return gear;
     }
 
-    @Override
     public void Accelerate(Integer amount) {
         super.Accelerate(amount);
         this.gear = (Integer)Math.ceil(0.4444 * Math.sqrt(this.getSpeed()));
     }
 
-    @Override
     public void Turn(Integer degrees) {
         this.steeringRotation += degrees;
         if (this.steeringRotation < -1440) {
