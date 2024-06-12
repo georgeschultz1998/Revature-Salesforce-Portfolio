@@ -1,11 +1,12 @@
-trigger PreventDuplicateContactPhone on Contact (before insert, before update) {
+trigger ContactPreventDuplicatePhone on Contact (before insert, before update) {
     Set<String> phoneNumbers = new Set<String>();
-    for (Contact con : [SELECT Phone FROM Contact WHERE Phone != null]) {
+    for (Contact con : [SELECT Phone FROM Contact WHERE Phone IN :Trigger.newMap.keySet()]) {
         phoneNumbers.add(con.Phone);
     }
+
     for (Contact con : Trigger.new) {
         if (con.Phone != null && phoneNumbers.contains(con.Phone)) {
-            con.addError('This phone number is already in use by another Contact.');
+            con.addError('Duplicate phone number detected.');
         } else if (con.Phone != null) {
             phoneNumbers.add(con.Phone);
         }
