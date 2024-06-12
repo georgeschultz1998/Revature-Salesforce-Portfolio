@@ -36,27 +36,76 @@ public class Calculator {
     }
 
     // Elite Challenge I: Calculate method
-    public Decimal Calculate(String expression) {
-        Decimal result = (Decimal)Parser.parseExpression(expression).evaluate();
-        return result;
+    public Double Calculate(String expression) {
+        Stack<Double> values = new Stack<Double>();
+        Stack<String> ops = new Stack<String>();
+    
+        Integer i = 0;
+        while (i < expression.length()) {
+            if (expression.charAt(i) == ' ') {
+                i++;
+                continue;
+            }
+    
+            if (Character.isDigit(expression.charAt(i)) || expression.charAt(i) == '.') {
+                StringBuilder sb = new StringBuilder();
+                while (i < expression.length() && (Character.isDigit(expression.charAt(i)) || expression.charAt(i) == '.')) {
+                    sb.append(expression.charAt(i++));
+                }
+                values.push(Double.valueOf(sb.toString()));
+                continue;
+            }
+    
+            if (expression.charAt(i) == '(') {
+                ops.push('(');
+            } else if (expression.charAt(i) == ')') {
+                while (ops.peek() != '(') {
+                    Double b = values.pop();
+                    Double a = values.pop();
+                    String op = ops.pop();
+                    values.push(evaluate(a, b, op));
+                }
+                ops.pop();
+            } else if (expression.charAt(i) == '+' || expression.charAt(i) == '-' || expression.charAt(i) == '*' || expression.charAt(i) == '/') {
+                while (!ops.isEmpty() && hasPrecedence(expression.charAt(i), ops.peek())) {
+                    Double b = values.pop();
+                    Double a = values.pop();
+                    String op = ops.pop();
+                    values.push(evaluate(a, b, op));
+                }
+                ops.push(String.valueOf(expression.charAt(i)));
+            }
+            i++;
+        }
+    
+        while (!ops.isEmpty()) {
+            Double b = values.pop();
+            Double a = values.pop();
+            String op = ops.pop();
+            values.push(evaluate(a, b, op));
+        }
+    
+        return values.pop();
     }
     
-    // Main method for testing
-    public static void main() {
-        Calculator calc = new Calculator();
-        
-        // Challenge I to V Test Cases
-        System.debug('Add: ' + calc.Add(1, 2)); // 3
-        System.debug('Multiply: ' + calc.Multiply(2, 3)); // 6
-        System.debug('Divide: ' + calc.Divide(10, 2)); // 5
-        System.debug('Divide by zero: ' + calc.Divide(10, 0)); // 0
-        System.debug('Mod: ' + calc.Mod(10, 3)); // 1
-
-        // Elite Challenge I test cases
-        System.debug('Calculate 1 + 2 * 3: ' + calc.Calculate('1 + 2 * 3')); // 7
-        System.debug('Calculate 2 * 2 + 3: ' + calc.Calculate('2 * 2 + 3')); // 7
-        System.debug('Calculate (1 + 2) * 3: ' + calc.Calculate('(1 + 2) * 3')); // 9
-        System.debug('Calculate ((3 * (4 + 2) - 8) + 10) / 2: ' + calc.Calculate('((3 * (4 + 2) - 8) + 10) / 2')); // 10
-        System.debug('Calculate (10.5 * 2 - 10) * 0.5: ' + calc.Calculate('(10.5 * 2 - 10) * 0.5')); // 5.5
+    private Double evaluate(Double a, Double b, String op) {
+        switch on op {
+            when '+' { return Double.valueOf(Add(a.intValue(), b.intValue())); }
+            when '-' { return Double.valueOf(Add(a.intValue(), -b.intValue())); }
+            when '*' { return Double.valueOf(Multiply(a.intValue(), b.intValue())); }
+            when '/' { return Double.valueOf(Divide(a.intValue(), b.intValue())); }
+            when else { throw new AuraHandledException('Unknown operator: ' + op); }
+        }
     }
+    
+    private Boolean hasPrecedence(String op1, String op2) {
+        if (op2 == '(' || op2 == ')') {
+            return false;
+        }
+        if ((op1 == '*' || op1 == '/') && (op2 == '+' || op2 == '-')) {
+            return false;
+        }
+        return true;
+    }
+    
 }
