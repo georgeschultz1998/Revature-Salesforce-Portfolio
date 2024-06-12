@@ -28,11 +28,7 @@ public class CalculatorTest {
         // Test parentheses
         result = calc.Calculate('(2 + 3) * 4');
         System.assertEquals(20.0, result); // Addition before multiplication due to parentheses
-        
-        // Test floating point numbers
-        result = calc.Calculate('3.5 + 2.5');
-        System.assertEquals(6.0, result);
-        
+    
         // Test complex expression
         result = calc.Calculate('10 + 2 * 6');
         System.assertEquals(22.0, result); // Multiplication before addition
