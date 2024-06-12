@@ -36,8 +36,25 @@ public class DataLord {
     }
 
     // Elite Challenge I: Top 5 Lead Sources by Likelihood to Close
-    public static List<AggregateResult> TopLeadSources() {
-        return [SELECT LeadSource, COUNT(Id) Total, COUNT(Id) / (SELECT COUNT(Id) FROM Opportunity WHERE IsClosed = TRUE) Likelihood 
-                FROM Opportunity WHERE LeadSource != NULL GROUP BY LeadSource ORDER BY COUNT(Id) DESC LIMIT 5];
+    public static List<LeadSourceLikelihood> TopLeadSources() {
+        List<AggregateResult> results = [SELECT LeadSource, COUNT(Id) Total FROM Opportunity WHERE LeadSource != NULL AND IsClosed = TRUE AND IsWon = TRUE GROUP BY LeadSource ORDER BY COUNT(Id) DESC LIMIT 5];
+        
+        List<LeadSourceLikelihood> likelihoods = new List<LeadSourceLikelihood>();
+        Integer totalClosed = [SELECT COUNT() FROM Opportunity WHERE IsClosed = TRUE AND IsWon = TRUE];
+
+        for (AggregateResult ar : results) {
+            LeadSourceLikelihood lsl = new LeadSourceLikelihood();
+            lsl.LeadSource = (String) ar.get('LeadSource');
+            lsl.Total = (Integer) ar.get('Total');
+            lsl.Likelihood = ((Decimal) ((Integer) ar.get('Total'))) / totalClosed;
+            likelihoods.add(lsl);
+        }
+        return likelihoods;
+    }
+
+    public class LeadSourceLikelihood {
+        public String LeadSource;
+        public Integer Total;
+        public Decimal Likelihood;
     }
 }
