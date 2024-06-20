@@ -21,7 +21,7 @@ public class DataLord {
 
     // Challenge V: Most Recent Opportunity with Amount > 100,000
     public static Opportunity LastBigOpportunity() {
-        return [SELECT Id, Name, CloseDate FROM Opportunity WHERE Amount > 100000 ORDER BY CloseDate DESC LIMIT 1];
+        return [SELECT Id, Name, Amount, CloseDate FROM Opportunity WHERE Amount > 100000 ORDER BY CloseDate DESC LIMIT 1];
     }
 
     // Challenge VI: Contacts associated with Hot Accounts
@@ -40,13 +40,13 @@ public class DataLord {
         List<AggregateResult> results = [SELECT LeadSource, COUNT(Id) Total FROM Opportunity WHERE LeadSource != NULL AND IsClosed = TRUE AND IsWon = TRUE GROUP BY LeadSource ORDER BY COUNT(Id) DESC LIMIT 5];
         
         List<LeadSourceLikelihood> likelihoods = new List<LeadSourceLikelihood>();
-        Integer totalClosed = [SELECT COUNT() FROM Opportunity WHERE IsClosed = TRUE AND IsWon = TRUE];
+        Integer totalClosed = Integer.valueOf([SELECT COUNT() FROM Opportunity WHERE IsClosed = TRUE AND IsWon = TRUE]);
 
         for (AggregateResult ar : results) {
             LeadSourceLikelihood lsl = new LeadSourceLikelihood();
             lsl.LeadSource = (String) ar.get('LeadSource');
             lsl.Total = (Integer) ar.get('Total');
-            lsl.Likelihood = ((Decimal) ((Integer) ar.get('Total'))) / totalClosed;
+            lsl.Likelihood = ((Decimal) lsl.Total) / totalClosed;
             likelihoods.add(lsl);
         }
         return likelihoods;
