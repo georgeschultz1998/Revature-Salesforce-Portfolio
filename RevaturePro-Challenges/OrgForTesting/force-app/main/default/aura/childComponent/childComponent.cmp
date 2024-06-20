@@ -1,0 +1,7 @@
+<aura:component>
+    <aura:attribute name="inputValue" type="String"/>
+    <aura:registerEvent name="sendValue" type="c:sendValueEvent"/>
+    
+    <lightning:input label="Enter Text" value="{!v.inputValue}" aura:id="inputBox"/>
+    <lightning:button label="Send to Parent" onclick="{!c.handleSend}" />
+</aura:component>
