@@ -1,0 +1,7 @@
+<apex:page controller="WikipediaController">
+    <apex:form>
+        <h1>Wikipedia: {!pageTitle}</h1>
+        <p>Preview: {!pagePreview}</p>
+        <p>Description: {!pageDescription}</p>
+    </apex:form>
+</apex:page>

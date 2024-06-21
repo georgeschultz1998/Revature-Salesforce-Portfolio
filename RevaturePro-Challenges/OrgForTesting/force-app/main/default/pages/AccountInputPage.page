@@ -1,0 +1,15 @@
+<apex:page controller="AccountInputController">
+    <apex:form>
+        <apex:inputText value="{!accountName}" />
+        <apex:commandButton action="{!search}" value="Search" rerender="accountInfo"/>
+        <apex:outputPanel id="accountInfo" rendered="{!NOT(ISNULL(account))}">
+            <apex:outputField value="{!account.Name}" />
+            <apex:outputField value="{!account.Industry}" />
+
+            <!-- Related Contacts Section -->
+            <apex:repeat value="{!account.Contacts}" var="contact">
+                <apex:outputText value="{!contact.Name}" /><br/>
+            </apex:repeat>
+        </apex:outputPanel>
+    </apex:form>
+</apex:page>

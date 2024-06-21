@@ -1,0 +1,19 @@
+<apex:page standardController="Account" extensions="AccountPaginationController">
+    <apex:form>
+        <!-- Account Details Section -->
+        <apex:outputField value="{!account.Name}" />
+        <apex:outputField value="{!account.Industry}" />
+        
+        <!-- Pagination Section -->
+        <apex:pageBlock title="Accounts">
+            <apex:pageBlockTable value="{!accounts}" var="account">
+                <apex:column value="{!account.Name}" />
+                <apex:column value="{!account.Industry}" />
+            </apex:pageBlockTable>
+            <apex:pageBlockButtons>
+                <apex:commandButton action="{!previous}" value="Previous" rerender="accounts"/>
+                <apex:commandButton action="{!next}" value="Next" rerender="accounts"/>
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

@@ -1,0 +1,23 @@
+<apex:page controller="AccountSpecificController" renderAs="pdf" standardStylesheets="false">
+    <style>
+        .custom-style {
+            font-family: Arial, sans-serif;
+            color: #333;
+        }
+    </style>
+    <div class="custom-style">
+        <apex:form>
+            <apex:outputField value="{!account.Name}" />
+            <apex:outputField value="{!account.Industry}" />
+
+            <!-- About Me Section -->
+            <apex:outputText value="{!aboutMe}" />
+            
+            <!-- Greeting Section -->
+            <apex:commandButton action="{!addGreeting}" value="Show Greeting" rerender="greeting"/>
+            <apex:outputPanel id="greeting">
+                <apex:outputText value="{!greeting}" rendered="{!greeting != ''}" />
+            </apex:outputPanel>
+        </apex:form>
+    </div>
+</apex:page>

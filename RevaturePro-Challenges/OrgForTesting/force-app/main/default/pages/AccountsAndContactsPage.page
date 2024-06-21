@@ -1,0 +1,15 @@
+<apex:page controller="AccountsAndContactsController">
+    <apex:form>
+        <apex:pageBlock title="Accounts and Contacts">
+            <apex:pageBlockTable value="{!accounts}" var="account">
+                <apex:column value="{!account.Name}" />
+                <apex:column headerValue="Contacts">
+                    <apex:repeat value="{!account.Contacts}" var="contact">
+                        <apex:outputText value="{!contact.Name}" />
+                        <apex:outputText value=", " rendered="{!NOT(ISNULL(contact))}" />
+                    </apex:repeat>
+                </apex:column>
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

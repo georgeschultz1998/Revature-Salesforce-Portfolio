@@ -1,0 +1,17 @@
+<apex:page controller="AccountFilterController" lightningStylesheets="true">
+    <apex:form>
+        <apex:inputText value="{!filter}" onkeyup="submit()" />
+        <apex:pageBlock title="Accounts">
+            <apex:inlineEditSupport event="ondblclick" />
+            <apex:pageBlockTable value="{!filteredAccounts}" var="account">
+                <apex:column value="{!account.Name}" />
+                <apex:column headerValue="Contacts">
+                    <apex:repeat value="{!account.Contacts}" var="contact">
+                        <apex:outputText value="{!contact.Name}" />
+                        <apex:outputText value=", " rendered="{!NOT(ISNULL(contact))}" />
+                    </apex:repeat>
+                </apex:column>
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>
