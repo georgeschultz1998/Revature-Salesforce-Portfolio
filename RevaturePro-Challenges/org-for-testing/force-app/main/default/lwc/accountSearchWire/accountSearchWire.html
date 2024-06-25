@@ -1,0 +1,17 @@
+<template>
+    <lightning-card title="Account Search" icon-name="standard:account">
+        <div class="slds-m-around_medium">
+            <lightning-input label="Search Accounts" value={searchKey} onchange={handleSearchKeyChange}></lightning-input>
+        </div>
+        <template lwc:if={accounts.data}>
+            <lightning-datatable
+                data={accounts.data}
+                columns={columns}
+                key-field="Id">
+            </lightning-datatable>
+        </template>
+        <template lwc:if={accounts.error}>
+            <div class="slds-text-color_error">Error loading accounts: {accounts.error}</div>
+        </template>
+    </lightning-card>
+</template>
