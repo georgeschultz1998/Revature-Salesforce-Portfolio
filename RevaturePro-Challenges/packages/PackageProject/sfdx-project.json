@@ -1,0 +1,30 @@
+{
+  "packageDirectories": [
+    {
+      "path": "force-app",
+      "default": true,
+      "package": "MyPackage",
+      "versionName": "ver 0.1",
+      "versionNumber": "0.1.0.NEXT",
+      "versionDescription": "My unlocked package"
+    },
+    {
+      "path": "force-app",
+      "package": "MyOrgDependentPackage",
+      "versionName": "ver 0.1",
+      "versionNumber": "0.1.0.NEXT",
+      "default": false,
+      "versionDescription": "My org-dependent unlocked package"
+    }
+  ],
+  "name": "PackageProject",
+  "namespace": "",
+  "sfdcLoginUrl": "https://login.salesforce.com",
+  "sourceApiVersion": "61.0",
+  "packageAliases": {
+    "MyPackage": "0Hobm00000005CbCAI",
+    "MyPackage@0.1.0-1": "04tbm0000001grdAAA",
+    "MyOrgDependentPackage": "0Hobm00000005EDCAY",
+    "MyOrgDependentPackage@0.1.0-1": "04tbm0000001gtFAAQ"
+  }
+}

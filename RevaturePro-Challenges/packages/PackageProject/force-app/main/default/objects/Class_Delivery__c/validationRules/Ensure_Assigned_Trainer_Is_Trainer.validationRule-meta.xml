@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Ensure_Assigned_Trainer_Is_Trainer</fullName>
+    <active>true</active>
+    <errorConditionFormula>NOT(Assigned_Trainer__r.Trainer__c)</errorConditionFormula>
+    <errorMessage>Error: Must be a Trainer contact.</errorMessage>
+</ValidationRule>
