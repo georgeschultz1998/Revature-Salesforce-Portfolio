@@ -1,34 +1,36 @@
 import { createElement } from 'lwc';
 import AccountSearchWire from 'c/accountSearchWire';
 import findAccounts from '@salesforce/apex/AccountController.findAccounts';
-import { registerApexTestWireAdapter } from '@salesforce/sfdx-lwc-jest';
 
-// Mocking Apex method
-const mockFindAccounts = registerApexTestWireAdapter(findAccounts);
+// Mocking the Apex wire adapter
+jest.mock('@salesforce/apex/AccountController.findAccounts', () => {
+    const { createApexTestWireAdapter } = require('@salesforce/sfdx-lwc-jest');
+    return {
+        default: createApexTestWireAdapter(jest.fn()),
+    };
+}, { virtual: true });
 
 describe('c-account-search-wire', () => {
+    let element; // Store the element reference for better access in tests
+
     afterEach(() => {
         // The jsdom instance is shared across test cases in a single file so reset the DOM
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
-        jest.clearAllMocks();
     });
 
     it('renders data from wire adapter', async () => {
-        const element = createElement('c-account-search-wire', {
+        element = createElement('c-account-search-wire', {
             is: AccountSearchWire
         });
         document.body.appendChild(element);
 
         // Mock data to be returned by the wire adapter
-        const mockData = [
-            { Id: '001', Name: 'Acme', Industry: 'Manufacturing', Rating: 'Hot' },
-            { Id: '002', Name: 'Tech Inc.', Industry: 'Technology', Rating: 'Warm' }
-        ];
+        const mockData = [{ Id: '001', Name: 'Account1', Industry: 'Tech', Rating: 'Hot' }];
 
         // Emit the mock data
-        mockFindAccounts.emit(mockData);
+        findAccounts.emit(mockData);
 
         await Promise.resolve(); // Wait for any asynchronous DOM updates
 
@@ -39,7 +41,7 @@ describe('c-account-search-wire', () => {
     });
 
     it('renders error message from wire adapter', async () => {
-        const element = createElement('c-account-search-wire', {
+        element = createElement('c-account-search-wire', {
             is: AccountSearchWire
         });
         document.body.appendChild(element);
@@ -48,7 +50,7 @@ describe('c-account-search-wire', () => {
         const mockError = { message: 'Error loading accounts' };
 
         // Emit the mock error
-        mockFindAccounts.error(mockError);
+        findAccounts.error(mockError);
 
         await Promise.resolve(); // Wait for any asynchronous DOM updates
 
@@ -57,5 +59,4 @@ describe('c-account-search-wire', () => {
         expect(errorDiv).not.toBeNull();
         expect(errorDiv.textContent).toBe(`${mockError.message}`);
     });
-
 });
