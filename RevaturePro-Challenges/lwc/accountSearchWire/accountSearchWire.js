@@ -1,16 +1,23 @@
-import { LightningElement, track, wire } from 'lwc';
+import { LightningElement, wire } from 'lwc';
 import findAccounts from '@salesforce/apex/AccountController.findAccounts';
 
 export default class AccountSearchWire extends LightningElement {
-    @track searchKey = '';
-    @track columns = [
+    searchKey = '';
+    columns = [
         { label: 'Name', fieldName: 'Name' },
         { label: 'Industry', fieldName: 'Industry' },
-        { label: 'Rating', fieldName: 'Rating' },
+        { label: 'Rating', fieldName: 'Rating' }
     ];
+    accounts = { data: null, error: null };
 
     @wire(findAccounts, { searchKey: '$searchKey' })
-    accounts;
+    wiredAccounts({ error, data }) {
+        if (data) {
+            this.accounts = { data, error: null };
+        } else if (error) {
+            this.accounts = { data: null, error };
+        }
+    }
 
     handleSearchKeyChange(event) {
         this.searchKey = event.target.value;
