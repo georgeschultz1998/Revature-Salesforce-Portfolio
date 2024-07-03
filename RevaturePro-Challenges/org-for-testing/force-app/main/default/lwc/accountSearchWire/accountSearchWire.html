@@ -7,7 +7,8 @@
             <lightning-datatable
                 data={accounts.data}
                 columns={columns}
-                key-field="Id">
+                key-field="Id"
+                onrowselection={handleRowSelection}>
             </lightning-datatable>
         </template>
         <template lwc:if={accounts.error}>

@@ -27,7 +27,7 @@ describe('c-create-contact', () => {
 
         // Check if inputs are rendered
         const inputs = element.shadowRoot.querySelectorAll('lightning-input');
-        expect(inputs.length).toBe(5);
+        expect(inputs.length).toBe(4); // Updated to 4 as there are now 4 input fields
 
         // Check if button is rendered
         const button = element.shadowRoot.querySelector('lightning-button');
@@ -78,9 +78,8 @@ describe('c-create-contact', () => {
         phoneInput.value = contact.Phone;
         phoneInput.dispatchEvent(new CustomEvent('change'));
 
-        const accountIdInput = element.shadowRoot.querySelector('lightning-input[data-id="accountId"]');
-        accountIdInput.value = contact.AccountId;
-        accountIdInput.dispatchEvent(new CustomEvent('change'));
+        // Mock the account selection
+        element.handleAccountSelected({ detail: contact.AccountId });
 
         createContactRecord.mockResolvedValue(contact);
 
@@ -93,31 +92,26 @@ describe('c-create-contact', () => {
         expect(createContactRecord).toHaveBeenCalled();
         expect(createContactRecord).toHaveBeenCalledWith({ contact });
     });
-    
-
-    
 
     it('renders error message from Apex call', async () => {
         element = createElement('c-create-contact', {
             is: CreateContact
         });
         document.body.appendChild(element);
-    
+
         // Mock error to be returned by the Apex method
         const mockError = { body: { message: 'Error creating contact' } };
         createContactRecord.mockRejectedValue(mockError);
-    
+
         // Trigger the createContact method
         const button = element.shadowRoot.querySelector('lightning-button');
         button.click();
-    
+
         await new Promise(resolve => setTimeout(resolve, 0)); // Wait for any asynchronous DOM updates
-    
+
         // Check if error message is rendered
         const errorDiv = element.shadowRoot.querySelector('.slds-text-color_error');
         expect(errorDiv).not.toBeNull();
         expect(errorDiv.textContent).toBe(`Error creating contact: ${mockError.body.message}`);
     });
-
-    
 });

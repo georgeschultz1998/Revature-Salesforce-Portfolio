@@ -5,7 +5,7 @@
             <lightning-input data-id="lastName" label="Last Name" value={lastName} onchange={handleInputChange}></lightning-input>
             <lightning-input data-id="email" label="Email" value={email} onchange={handleInputChange}></lightning-input>
             <lightning-input data-id="phone" label="Phone" value={phone} onchange={handleInputChange}></lightning-input>
-            <lightning-input data-id="accountId" label="Account ID" value={accountId} onchange={handleInputChange}></lightning-input>
+            <c-account-search-wire onaccountselected={handleAccountSelected}></c-account-search-wire>
             <lightning-button label="Create Contact" onclick={createContact}></lightning-button>
             <template lwc:if={errorMessage}>
                 <div class="slds-text-color_error">{errorMessage}</div>
